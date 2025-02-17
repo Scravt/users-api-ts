@@ -1,5 +1,6 @@
 import express, {Application} from 'express';
 import  userRoutes from '../routes/usuario';
+import cors from 'cors';
 
 class Server {
     private app: Application;
@@ -12,7 +13,24 @@ class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT || 8000;
+
+
+
+        this.midelwares();
         this.routes();
+    }
+
+    midelwares() {
+        //cors
+        this.app.use(cors());
+
+        //lectura del body
+        this.app.use(express.json());
+
+        //carpeta publica
+        this.app.use(express.static('public'));
+
+
     }
 
     routes() {
