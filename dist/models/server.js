@@ -17,34 +17,37 @@ const usuario_1 = __importDefault(require("../routes/usuario"));
 const cors_1 = __importDefault(require("cors"));
 const conecction_1 = __importDefault(require("../db/conecction"));
 class Server {
-    dbConnection() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield conecction_1.default.authenticate();
-                console.log('Database online');
-            }
-            catch (error) {
-                throw new Error(String(error));
-            }
-        });
-    }
     constructor() {
         this.apiPaths = {
-            usuarios: '/api/usuarios'
+            usuarios: "/api/usuarios",
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || 8000;
         this.dbConnection();
-        this.midelwares();
+        this.middlewares();
         this.routes();
     }
-    midelwares() {
-        //cors
+    dbConnection() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield conecction_1.default.authenticate();
+                console.log("Database online");
+                // Sincroniza las tablas sin perder datos
+                yield conecction_1.default.sync({ alter: true });
+                console.log("Tablas sincronizadas correctamente");
+            }
+            catch (error) {
+                console.error("Error al conectar la base de datos:", error);
+            }
+        });
+    }
+    middlewares() {
+        // CORS
         this.app.use((0, cors_1.default)());
-        //lectura del body
+        // Lectura del body
         this.app.use(express_1.default.json());
-        //carpeta publica
-        this.app.use(express_1.default.static('public'));
+        // Carpeta pública
+        this.app.use(express_1.default.static("public"));
     }
     routes() {
         this.app.use(this.apiPaths.usuarios, usuario_1.default);
