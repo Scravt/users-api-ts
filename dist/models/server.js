@@ -16,10 +16,13 @@ const express_1 = __importDefault(require("express"));
 const usuario_1 = __importDefault(require("../routes/usuario"));
 const cors_1 = __importDefault(require("cors"));
 const conecction_1 = __importDefault(require("../db/conecction"));
+require("../models");
 class Server {
     constructor() {
         this.apiPaths = {
             usuarios: "/api/usuarios",
+            professionals: "/api/professionals",
+            appointments: "/api/appointments",
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || 8000;

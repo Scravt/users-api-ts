@@ -1,13 +1,18 @@
 import express, { Application } from "express";
 import userRoutes from "../routes/usuario";
+import ProfessionalRoutes from "../routes/professional";
+import AppoimtmentRoutes from "../routes/appointment";
 import cors from "cors";
 import db from "../db/conecction";
+import "../models";
 
 class Server {
     private app: Application;
     private port: string | number;
     private apiPaths = {
         usuarios: "/api/usuarios",
+        professionals: "/api/professionals",
+        appointments: "/api/appointments",
     };
 
     constructor() {

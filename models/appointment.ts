@@ -26,6 +26,4 @@ Appoimtment.init({
 
 )
 
-
-
 export default Appoimtment;
