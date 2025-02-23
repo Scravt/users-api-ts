@@ -50,7 +50,7 @@ class Server {
     routes() {
         this.app.use(this.apiPaths.usuarios, userRoutes);
         this.app.use(this.apiPaths.professionals, ProfessionalRoutes);
-       
+        this.app.use(this.apiPaths.appointments, AppoimtmentRoutes);
     }
 
     listen() {

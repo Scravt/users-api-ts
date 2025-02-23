@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Op } from "sequelize";
 import Appoimtment from "../models/appointment";
 
 
@@ -30,7 +31,7 @@ const getAppointment = async (req: Request, res: Response): Promise<void> => {
 const getAppointmentsByUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        const appointments = await Appoimtment.findAll({ where: { id_usuario: id } });
+        const appointments = await Appoimtment.findAll({ where: { user_id: id } });
 
         if (!appointments) {
             res.status(404).json({ msg: "Citas no encontradas" });
@@ -46,7 +47,7 @@ const getAppointmentsByUser = async (req: Request, res: Response): Promise<void>
 const getAppointmentByProfessional = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        const appointments = await Appoimtment.findAll({ where: { id_profesional: id } });
+        const appointments = await Appoimtment.findAll({ where: { professional_id: id } });
 
         if (!appointments) {
             res.status(404).json({ msg: "Citas no encontradas" });
@@ -61,10 +62,20 @@ const getAppointmentByProfessional = async (req: Request, res: Response): Promis
 
 const getAppointmentByDate = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { fecha } = req.params;
-        const appointments = await Appoimtment.findAll({ where: { fecha } });
+        const { date } = req.params; // Se espera un formato "YYYY-MM-DD"
+        
+        const startDate = new Date(`${date}T00:00:00.000Z`); // Inicio del día
+        const endDate = new Date(`${date}T23:59:59.999Z`); // Fin del día
 
-        if (!appointments) {
+        const appointments = await Appoimtment.findAll({
+            where: {
+                date: {
+                    [Op.between]: [startDate, endDate] // Busca citas dentro del rango
+                }
+            }
+        });
+
+        if (appointments.length === 0) {
             res.status(404).json({ msg: "Citas no encontradas" });
             return;
         }
@@ -73,12 +84,12 @@ const getAppointmentByDate = async (req: Request, res: Response): Promise<void> 
     } catch (error) {
         res.status(500).json({ msg: "Error al obtener las citas", error });
     }
-}
+};
 
 const postAppointment = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id_usuario, id_profesional, date} = req.body;
-        const appointment = await Appoimtment.create({ id_usuario, id_profesional, date });
+        const { user_id,professional_id, date} = req.body;
+        const appointment = await Appoimtment.create({ user_id, professional_id, date });
 
         res.status(201).json(appointment);
     } catch (error) {
@@ -96,8 +107,8 @@ const putAppointment = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const { id_usuario, id_profesional, date } = req.body;
-        await appointment.update({ id_usuario, id_profesional, date });
+        const { id_usuario, id_professional, date } = req.body;
+        await appointment.update({ id_usuario, id_professional, date });
 
         res.json(appointment);
     } catch (error) {

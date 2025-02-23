@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAppointment = exports.putAppointment = exports.postAppointment = exports.getAppointmentByDate = exports.getAppointmentByProfessional = exports.getAppointmentsByUser = exports.getAppointment = exports.getAppointments = void 0;
+const sequelize_1 = require("sequelize");
 const appointment_1 = __importDefault(require("../models/appointment"));
 const getAppointments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -42,7 +43,7 @@ exports.getAppointment = getAppointment;
 const getAppointmentsByUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const appointments = yield appointment_1.default.findAll({ where: { id_usuario: id } });
+        const appointments = yield appointment_1.default.findAll({ where: { user_id: id } });
         if (!appointments) {
             res.status(404).json({ msg: "Citas no encontradas" });
             return;
@@ -57,7 +58,7 @@ exports.getAppointmentsByUser = getAppointmentsByUser;
 const getAppointmentByProfessional = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const appointments = yield appointment_1.default.findAll({ where: { id_profesional: id } });
+        const appointments = yield appointment_1.default.findAll({ where: { professional_id: id } });
         if (!appointments) {
             res.status(404).json({ msg: "Citas no encontradas" });
             return;
@@ -71,9 +72,17 @@ const getAppointmentByProfessional = (req, res) => __awaiter(void 0, void 0, voi
 exports.getAppointmentByProfessional = getAppointmentByProfessional;
 const getAppointmentByDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { fecha } = req.params;
-        const appointments = yield appointment_1.default.findAll({ where: { fecha } });
-        if (!appointments) {
+        const { date } = req.params; // Se espera un formato "YYYY-MM-DD"
+        const startDate = new Date(`${date}T00:00:00.000Z`); // Inicio del día
+        const endDate = new Date(`${date}T23:59:59.999Z`); // Fin del día
+        const appointments = yield appointment_1.default.findAll({
+            where: {
+                date: {
+                    [sequelize_1.Op.between]: [startDate, endDate] // Busca citas dentro del rango
+                }
+            }
+        });
+        if (appointments.length === 0) {
             res.status(404).json({ msg: "Citas no encontradas" });
             return;
         }
@@ -86,8 +95,8 @@ const getAppointmentByDate = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.getAppointmentByDate = getAppointmentByDate;
 const postAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id_usuario, id_profesional, date } = req.body;
-        const appointment = yield appointment_1.default.create({ id_usuario, id_profesional, date });
+        const { user_id, professional_id, date } = req.body;
+        const appointment = yield appointment_1.default.create({ user_id, professional_id, date });
         res.status(201).json(appointment);
     }
     catch (error) {
@@ -103,8 +112,8 @@ const putAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(404).json({ msg: "Cita no encontrada" });
             return;
         }
-        const { id_usuario, id_profesional, date } = req.body;
-        yield appointment.update({ id_usuario, id_profesional, date });
+        const { id_usuario, id_professional, date } = req.body;
+        yield appointment.update({ id_usuario, id_professional, date });
         res.json(appointment);
     }
     catch (error) {
