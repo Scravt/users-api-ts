@@ -1,9 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import db from "../db/conecction";
 
-class Usuario extends Model {}
+class Professional extends Model {}
 
-Usuario.init({
+Professional.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -24,15 +24,29 @@ Usuario.init({
             isEmail: { msg: "Debe ser un correo válido" },
         },
     },
+      area: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: { msg: "El área no puede estar vacía" },
+        },  
+    },
+      box: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: { msg: "El box no puede estar vacío" },
+        },
+    },
     status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
     },
 },{
     sequelize: db,
-    modelName: "Usuario",
-    tableName: "usuarios",
+    modelName: "Professional",
+    tableName: "professionals",
     timestamps: false,
-});
+});	
 
-export default Usuario;
+export default Professional;

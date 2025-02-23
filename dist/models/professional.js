@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const conecction_1 = __importDefault(require("../db/conecction"));
-class Usuario extends sequelize_1.Model {
+class Professional extends sequelize_1.Model {
 }
-Usuario.init({
+Professional.init({
     id: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
@@ -28,15 +28,29 @@ Usuario.init({
             isEmail: { msg: "Debe ser un correo válido" },
         },
     },
+    area: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: { msg: "El área no puede estar vacía" },
+        },
+    },
+    box: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: { msg: "El box no puede estar vacío" },
+        },
+    },
     status: {
         type: sequelize_1.DataTypes.BOOLEAN,
         defaultValue: true,
     },
 }, {
     sequelize: conecction_1.default,
-    modelName: "Usuario",
-    tableName: "usuarios",
+    modelName: "Professional",
+    tableName: "professionals",
     timestamps: false,
 });
-exports.default = Usuario;
-//# sourceMappingURL=usuario.js.map
+exports.default = Professional;
+//# sourceMappingURL=professional.js.map
