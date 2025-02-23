@@ -56,8 +56,8 @@ const getProfessionalByArea = (req, res) => __awaiter(void 0, void 0, void 0, fu
 exports.getProfessionalByArea = getProfessionalByArea;
 const postProfessional = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nombre, email, area } = req.body;
-        const professional = yield professional_1.default.create({ nombre, email, area });
+        const { name, email, area, box } = req.body;
+        const professional = yield professional_1.default.create({ name, email, area, box });
         res.status(201).json(professional);
     }
     catch (error) {

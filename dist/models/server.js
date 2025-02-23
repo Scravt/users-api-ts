@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const usuario_1 = __importDefault(require("../routes/usuario"));
+const professional_1 = __importDefault(require("../routes/professional"));
 const cors_1 = __importDefault(require("cors"));
 const conecction_1 = __importDefault(require("../db/conecction"));
 require("../models");
@@ -54,6 +55,7 @@ class Server {
     }
     routes() {
         this.app.use(this.apiPaths.usuarios, usuario_1.default);
+        this.app.use(this.apiPaths.professionals, professional_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

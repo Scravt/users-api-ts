@@ -28,8 +28,8 @@ export const getUsuario = async (req: Request, res: Response): Promise<void> => 
 
 export const postUsuario = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { nombre, email, estado } = req.body;
-        const usuario = await Usuario.create({ nombre, email, estado });
+        const { name, email, estado } = req.body;
+        const usuario = await Usuario.create({ name, email, estado });
 
         res.status(201).json(usuario);
     } catch (error) {

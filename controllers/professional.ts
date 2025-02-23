@@ -44,8 +44,8 @@ const getProfessionalByArea = async (req: Request, res: Response): Promise<void>
 
 const postProfessional = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { nombre, email, area } = req.body;
-        const professional = await Professional.create({ nombre, email, area });
+        const { name, email, area, box } = req.body;
+        const professional = await Professional.create({ name, email, area, box });
 
         res.status(201).json(professional);
     } catch (error) {
