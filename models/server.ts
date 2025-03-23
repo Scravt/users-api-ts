@@ -1,8 +1,12 @@
 import express, { Application } from "express";
+import cors from "cors";
+
+
 import userRoutes from "../routes/usuario";
 import ProfessionalRoutes from "../routes/professional";
 import AppoimtmentRoutes from "../routes/appointment";
-import cors from "cors";
+import AppointmentAvailabilityServiceRouter from "../routes/AppointmentAvailabilityService";
+
 import db from "../db/conecction";
 import "../models";
 
@@ -13,6 +17,7 @@ class Server {
         usuarios: "/api/usuarios",
         professionals: "/api/professionals",
         appointments: "/api/appointments",
+        appointmentsConfig: "/api/appointments-config",
     };
 
     constructor() {
@@ -51,6 +56,7 @@ class Server {
         this.app.use(this.apiPaths.usuarios, userRoutes);
         this.app.use(this.apiPaths.professionals, ProfessionalRoutes);
         this.app.use(this.apiPaths.appointments, AppoimtmentRoutes);
+        this.app.use(this.apiPaths.appointmentsConfig, AppointmentAvailabilityServiceRouter);
     }
 
     listen() {
