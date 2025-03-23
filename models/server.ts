@@ -37,7 +37,7 @@ class Server {
     }
 
     middlewares() {
-        // CORS
+        // CORS vbuscar bienq ue es cors
         this.app.use(cors());
 
         // Lectura del body

@@ -20,6 +20,20 @@ Usuario.init({
             notEmpty: { msg: "El nombre no puede estar vacío" },
         },
     },
+    lastName: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: { msg: "El apellido no puede estar vacío" },
+        },
+    },
+    dni: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: { msg: "El dni no puede estar vacío" },
+        },
+    },
     email: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,

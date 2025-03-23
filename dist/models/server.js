@@ -47,7 +47,7 @@ class Server {
         });
     }
     middlewares() {
-        // CORS
+        // CORS vbuscar bienq ue es cors
         this.app.use((0, cors_1.default)());
         // Lectura del body
         this.app.use(express_1.default.json());
