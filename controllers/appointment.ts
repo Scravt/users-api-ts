@@ -99,7 +99,9 @@ const postAppointment = async (req: Request, res: Response): Promise<void> => {
 
 const putAppointment = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
+        const { id } = req.params;  // Obtén el id de la cita a actualizar.
+        
+        // Busca la cita por su ID
         const appointment = await Appoimtment.findByPk(id);
 
         if (!appointment) {
@@ -107,14 +109,19 @@ const putAppointment = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const { id_usuario, id_professional, date } = req.body;
-        await appointment.update({ id_usuario, id_professional, date });
+        // Asegúrate de que los campos del cuerpo coincidan con los del modelo
+        const { user_id, professional_id, processType, date } = req.body;
 
+        // Realiza la actualización
+        await appointment.update({ user_id, professional_id, processType, date });
+
+        // Devuelve la cita actualizada
         res.json(appointment);
     } catch (error) {
         res.status(500).json({ msg: "Error al actualizar la cita", error });
     }
 }
+
 
 const deleteAppointment = async (req: Request, res: Response): Promise<void> => {
     try {

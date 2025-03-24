@@ -106,14 +106,18 @@ const postAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.postAppointment = postAppointment;
 const putAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
+        const { id } = req.params; // Obtén el id de la cita a actualizar.
+        // Busca la cita por su ID
         const appointment = yield appointment_1.default.findByPk(id);
         if (!appointment) {
             res.status(404).json({ msg: "Cita no encontrada" });
             return;
         }
-        const { id_usuario, id_professional, date } = req.body;
-        yield appointment.update({ id_usuario, id_professional, date });
+        // Asegúrate de que los campos del cuerpo coincidan con los del modelo
+        const { user_id, professional_id, processType, date } = req.body;
+        // Realiza la actualización
+        yield appointment.update({ user_id, professional_id, processType, date });
+        // Devuelve la cita actualizada
         res.json(appointment);
     }
     catch (error) {
