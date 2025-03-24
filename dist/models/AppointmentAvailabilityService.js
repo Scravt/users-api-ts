@@ -11,23 +11,27 @@ AppointmentAvailabilityService.init({
     id: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: 1, // Siempre será 1
+        autoIncrement: true,
     },
     datesAvailability: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.STRING, // Se almacena como STRING con JSON
         allowNull: false,
-        defaultValue: JSON.stringify([2, 4]), // Días permitidos (ejemplo: martes y jueves)
+        defaultValue: JSON.stringify([2, 4]), // Se guarda como JSON en string
         validate: {
-            notEmpty: { msg: "La disponibilidad de días no puede estar vacía" },
+            notEmpty: { msg: "datesAvailability no puede estar vacío" },
+        },
+        get() {
+            const value = this.getDataValue("datesAvailability");
+            return value ? JSON.parse(value) : []; // Convertir STRING a ARRAY
+        },
+        set(value) {
+            this.setDataValue("datesAvailability", JSON.stringify(value)); // Convertir ARRAY a STRING
         },
     },
     minWaitingDays: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 7, // Días mínimos de espera
-        validate: {
-            notEmpty: { msg: "Los días mínimos de espera no pueden estar vacíos" },
-        },
+        defaultValue: 7,
     },
 }, {
     sequelize: conecction_1.default,

@@ -88,8 +88,8 @@ const getAppointmentByDate = async (req: Request, res: Response): Promise<void> 
 
 const postAppointment = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { user_id,professional_id, date} = req.body;
-        const appointment = await Appoimtment.create({ user_id, professional_id, date });
+        const { user_id,professional_id, processType,date} = req.body;
+        const appointment = await Appoimtment.create({ user_id, professional_id,processType, date });
 
         res.status(201).json(appointment);
     } catch (error) {

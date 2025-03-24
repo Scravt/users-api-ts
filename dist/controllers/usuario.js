@@ -41,8 +41,8 @@ const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getUsuario = getUsuario;
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, email, estado } = req.body;
-        const usuario = yield usuario_1.default.create({ name, email, estado });
+        const { name, email, lastName, dni, estado } = req.body;
+        const usuario = yield usuario_1.default.create({ name, email, lastName, dni, estado });
         res.status(201).json(usuario);
     }
     catch (error) {

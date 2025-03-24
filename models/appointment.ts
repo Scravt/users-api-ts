@@ -11,6 +11,14 @@ Appoimtment.init({
         primaryKey: true,
         autoIncrement: true,
     },
+    processType: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: { msg: "El tipo de proceso no puede estar vacío" },
+        },
+    },
+
     date: {
         type: DataTypes.DATE,
         allowNull: false,

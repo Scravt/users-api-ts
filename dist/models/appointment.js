@@ -13,6 +13,13 @@ Appoimtment.init({
         primaryKey: true,
         autoIncrement: true,
     },
+    processType: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: { msg: "El tipo de proceso no puede estar vacío" },
+        },
+    },
     date: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false,

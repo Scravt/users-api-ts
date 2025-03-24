@@ -45,11 +45,25 @@ const updateAppointmentAvailability = (req, res) => __awaiter(void 0, void 0, vo
 exports.updateAppointmentAvailability = updateAppointmentAvailability;
 const createAppointmentAvailability = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const config = yield AppointmentAvailabilityService_1.default.create(req.body);
-        res.json(config);
+        const { datesAvailability, minWaitingDays } = req.body;
+        // Validar que datesAvailability sea un array de números
+        if (!Array.isArray(datesAvailability) || datesAvailability.some(day => typeof day !== "number")) {
+            res.status(400).json({ msg: "datesAvailability debe ser un array de números" });
+            return;
+        }
+        if (typeof minWaitingDays !== "number") {
+            res.status(400).json({ msg: "minWaitingDays debe ser un número" });
+            return;
+        }
+        // Crear el nuevo registro
+        const appointmentAvailabilityService = yield AppointmentAvailabilityService_1.default.create({
+            datesAvailability, // Sequelize lo convierte automáticamente en JSON
+            minWaitingDays,
+        });
+        res.status(201).json(appointmentAvailabilityService);
     }
     catch (error) {
-        res.status(500).json({ msg: "Error al crear la configuración", error });
+        res.status(500).json({ msg: "Error al crear el servicio de disponibilidad de citas", error });
     }
 });
 exports.createAppointmentAvailability = createAppointmentAvailability;

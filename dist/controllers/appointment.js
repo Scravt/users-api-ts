@@ -95,8 +95,8 @@ const getAppointmentByDate = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.getAppointmentByDate = getAppointmentByDate;
 const postAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { user_id, professional_id, date } = req.body;
-        const appointment = yield appointment_1.default.create({ user_id, professional_id, date });
+        const { user_id, professional_id, processType, date } = req.body;
+        const appointment = yield appointment_1.default.create({ user_id, professional_id, processType, date });
         res.status(201).json(appointment);
     }
     catch (error) {
